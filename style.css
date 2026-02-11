@@ -1,0 +1,445 @@
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+}
+
+:root {
+  --bg: #0f172a;
+  --bg-secondary: #020617;
+  --card: #111827;
+  --primary: #6366f1;
+  --secondary: #22d3ee;
+  --text: #e5e7eb;
+  --muted: #94a3b8;
+  --error: #ef4444;
+  --success: #22c55e;
+}
+
+[data-theme="light"] {
+  --bg: #f1f5f9;
+  --bg-secondary: #e2e8f0;
+  --card: #ffffff;
+  --primary: #4f46e5;
+  --secondary: #06b6d4;
+  --text: #0f172a;
+  --muted: #64748b;
+}
+
+/* BODY */
+body {
+  background: linear-gradient(120deg, var(--bg), var(--bg-secondary));
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text);
+  overflow: hidden;
+}
+
+/* MAIN */
+.main-container {
+  width: 100%;
+  max-width: 1100px;
+  height: 650px;
+  background: var(--card);
+  border-radius: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.4);
+  animation: fadeIn 0.8s ease;
+}
+
+/* BRANDING */
+.branding-side {
+  background: linear-gradient(
+    135deg,
+    var(--primary),
+    var(--secondary)
+  );
+  color: white;
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.logo {
+  font-size: 48px;
+  animation: float 3s ease-in-out infinite;
+}
+
+.branding-content h1 {
+  font-size: 36px;
+  line-height: 1.2;
+}
+
+.rocket-container {
+  margin-top: 20px;
+  font-size: 24px;
+  opacity: 0.8;
+}
+
+.pagination span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #999;
+  margin: 0 4px;
+  display: inline-block;
+  opacity: 0.4;
+  transition: 0.3s;
+}
+
+.pagination span.active {
+  background: #00ffcc;
+  opacity: 1;
+  transform: scale(1.4);
+}
+
+/* FORM SIDE */
+.form-side {
+  padding: 40px;
+  position: relative;
+}
+
+/* TOP NAV */
+.top-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-btn {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.signup-pill {
+  background: var(--primary);
+  color: white;
+  padding: 6px 14px;
+  border-radius: 20px;
+}
+
+.header__toggle {
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* SLIDER */
+.form-viewport {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  margin-top: 40px;
+}
+
+.form-slider {
+  width: 200%;
+  display: flex;
+  transition: transform 0.6s ease;
+}
+
+.form-box {
+  width: 50%;
+  padding-right: 40px;
+  animation: slideUp 0.8s ease;
+}
+
+/* TABS */
+.tabs {
+  margin-bottom: 30px;
+}
+
+.tab {
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--muted);
+}
+
+.tab.active {
+  color: var(--primary);
+}
+
+.separator {
+  margin: 0 10px;
+  color: var(--muted);
+}
+
+/* INPUTS */
+.input-block {
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.input-block input {
+  width: 100%;
+  padding: 14px 12px;
+  background: transparent;
+  border: 1px solid var(--muted);
+  border-radius: 8px;
+  color: var(--text);
+  outline: none;
+  font-size: 14px;
+}
+
+.input-block label {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+  pointer-events: none;
+  transition: 0.3s;
+  background: var(--card);
+  padding: 0 6px;
+}
+
+.input-block input:focus + label,
+.input-block input:not(:placeholder-shown) + label {
+  top: -8px;
+  font-size: 12px;
+  color: var(--primary);
+}
+
+/* BUTTONS */
+.btn-submit {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(
+    135deg,
+    var(--primary),
+    var(--secondary)
+  );
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+}
+
+.passwordForgot {
+  margin-top: 10px;
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+/* MESSAGES */
+.error-msg {
+  font-size: 12px;
+  color: var(--error);
+}
+
+/* TELA DE RECUPERAÇÃO (OVERLAY) */
+.passwordRecovery {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  display: none; /* Escondido por padrão */
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  z-index: 1000;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+/* Quando a classe .active for adicionada via JS */
+.passwordRecovery.active {
+  display: flex;
+  animation: slideIn 0.4s ease-out;
+}
+
+#recoveryInstruction{
+  margin: 20px;
+  font-size: 18px;
+  color: var(--text);
+}
+
+#step-1, #step-2, #step-3 {
+  width: 50%;
+  animation: fadeIn 0.4s ease;
+  gap: 20px;
+}
+
+/* 3. BLOCOS DE INPUT E LABELS */
+/* Como no Step 3 os inputs estão soltos, tratamos o .input-block e os inputs diretos */
+.passwordRecovery .input-block, 
+.passwordRecovery div[id^="step"] {
+  position: relative;
+  margin-bottom: 20px; /* Espaço para a label não bater no input de cima */
+}
+
+.passwordRecovery input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: transparent;
+  font-size: 16px;
+  outline: none;
+  transition: all 0.3s;
+  display: block;
+}
+
+/* Estilização das Labels conforme seu HTML */
+.passwordRecovery label {
+  position: absolute;
+  left: 12px;
+  top: 25px; 
+  padding: 0 5px;
+ 
+  font-size: 14px;
+  pointer-events: none;
+  transition: all 0.2s ease;
+}
+
+/* 4. EFEITO FLUTUANTE (Placeholder-shown é o segredo) */
+.passwordRecovery input:focus + label,
+.passwordRecovery input:not(:placeholder-shown) + label {
+  top: -10px;
+  left: 10px;
+  font-size: 12px;
+  color: #6366f1;
+  font-weight: bold;
+}
+.btn-submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background-color: #94a3b8; /* Cor cinza para indicar travado */
+}
+/* 5. BOTÕES */
+.btn-submit {
+  width: 100%;
+  padding: 14px;
+  background-color: #6366f1;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.3s;
+}
+
+.btn-submit:hover {
+  background-color: #4f46e5;
+}
+
+/* 6. CORREÇÃO ESPECÍFICA PARA O STEP 3 (Onde os inputs estão soltos) */
+/* Isso evita que "Nova Senha" e "Confirmar Senha" fiquem colados */
+#step-3 input {
+  margin-bottom: 25px;
+}
+/* Garante que os inputs soltos no Step 3 tenham espaço */
+#step-3 .input-block {
+    margin-bottom: 25px !important;
+}
+
+
+/* Ajuste da label de confirmação que você marcou com top: 110px no HTML inline */
+/* O CSS abaixo sobrescreve para garantir que ela fique no lugar certo */
+#step-3 label {
+  top: 12px !important; 
+}
+
+#step-3 input:focus + label,
+#step-3 input:not(:placeholder-shown) + label {
+  top: -10px !important;
+}
+
+/* 7. TEXTOS E ERROS */
+.error-msg {
+  color: #ff4d4d;
+  display: block;
+  margin-bottom: 10px;
+  font-size: 13px;
+}
+
+.back-link {
+  background: none;
+  border: none;
+  color: #777;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  margin-top: 15px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+/* ANIMATIONS */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+/* RESPONSIVO */
+@media (max-width: 900px) {
+  .main-container {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+
+  .branding-side {
+    display: none;
+  }
+
+  .form-box {
+    width: 100%;
+  }
+
+  .form-slider {
+    width: 100%;
+  }
+}
