@@ -1,4 +1,3 @@
-// ===== ELEMENTOS =====
 const slider = document.getElementById("form-slider");
 const btnLoginNav = document.getElementById("nav-login");
 const btnSignupNav = document.getElementById("nav-signup");

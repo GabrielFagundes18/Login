@@ -156,12 +156,10 @@ app.get('/', (req, res) => {
 });
 
 
-// 5. LIGAR O SERVIDOR
 app.listen(PORT, () => {
   console.log(`\n🚀 SITE ONLINE: http://localhost:${PORT}`);
   console.log(`📂 Pasta: ${__dirname}`);
 
-  // Tenta conectar ao banco em segundo plano
   prisma
     .$connect()
     .then(() => console.log("🐘 Banco de Dados: OK"))
