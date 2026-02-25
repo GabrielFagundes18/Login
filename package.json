@@ -1,14 +1,11 @@
 {
   "name": "loginnovo",
   "version": "1.0.0",
-  "description": "",
-  "main": "script.js",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "prisma generate",
+    "start": "node server.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "@prisma/client": "^7.4.0",
     "@prisma/extension-accelerate": "^3.0.1",

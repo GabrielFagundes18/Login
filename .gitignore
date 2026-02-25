@@ -7,7 +7,7 @@ node_modules/
 .env.sample
 !.env.example # Permite enviar um modelo sem dados reais
 
-/generated/prisma
+
 schema.prisma.backup
 
 npm-debug.log*
