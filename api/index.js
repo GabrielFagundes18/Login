@@ -137,19 +137,8 @@ app.post("/api/reset-password", async (req, res) => {
 app.use(express.static(__dirname));
 app.use(express.static(path.join(__dirname, '../public')));
 
-app.get((req, res) => {
-  const rootPath = path.join(__dirname, 'index.html');
-  const publicPath = path.join(__dirname, 'public', 'index.html');
-  
-  res.sendFile(rootPath, (err) => {
-    if (err) {
-      res.sendFile(publicPath, (err2) => {
-        if (err2) {
-          res.status(404).send("<h1>Erro: Arquivo index.html não encontrado!</h1><p>Verifique se o nome do arquivo está correto.</p>");
-        }
-      });
-    }
-  });
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "../public/index.html"));
 });
 
 
