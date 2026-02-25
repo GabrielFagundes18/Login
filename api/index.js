@@ -135,7 +135,7 @@ app.post("/api/reset-password", async (req, res) => {
 
 
 app.use(express.static(__dirname));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '../public')));
 
 app.get((req, res) => {
   const rootPath = path.join(__dirname, 'index.html');
