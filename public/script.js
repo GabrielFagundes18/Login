@@ -126,7 +126,7 @@ async function acessarLogin() {
       localStorage.setItem("usuarioLogado", JSON.stringify(data));
       alert("Login realizado com sucesso!");
       window.location.href =
-        data.tipo === "ADMIN" ? "dashboard-admin.html" : "home.html";
+        data.tipo === "ADMIN" ? "dashboard-admin.html" : "https://login-chi-sepia.vercel.app/";
     } else {
       passwordError.innerHTML = "E-mail ou senha incorretos.";
     }
