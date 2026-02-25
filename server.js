@@ -14,10 +14,9 @@ app.use(express.json());
 
 
 
-const { PrismaClient } = require("./generated/prisma");
-const { withAccelerate } = require("@prisma/extension-accelerate");
+const { PrismaClient } = require("@prisma/client");
 
-const prisma = new PrismaClient().$extends(withAccelerate());
+const prisma = new PrismaClient();
 
 
 app.get("/api/check-email/:email", async (req, res) => {
@@ -138,7 +137,7 @@ app.post("/api/reset-password", async (req, res) => {
 app.use(express.static(__dirname));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('*', (req, res) => {
+app.get((req, res) => {
   const rootPath = path.join(__dirname, 'index.html');
   const publicPath = path.join(__dirname, 'public', 'index.html');
   
@@ -165,3 +164,4 @@ app.listen(PORT, () => {
       console.log("⚠️  Aviso: Banco offline, mas o site deve abrir."),
     );
 });
+module.exports = app;
