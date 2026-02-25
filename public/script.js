@@ -126,7 +126,9 @@ async function acessarLogin() {
       localStorage.setItem("usuarioLogado", JSON.stringify(data));
       alert("Login realizado com sucesso!");
       window.location.href =
-        data.tipo === "ADMIN" ? "dashboard-admin.html" : "https://login-chi-sepia.vercel.app/";
+        data.tipo === "ADMIN"
+          ? "/dashboard-admin.html"
+          : "https://gabrielfagundes18.github.io/";
     } else {
       passwordError.innerHTML = "E-mail ou senha incorretos.";
     }
@@ -204,24 +206,24 @@ const temaSalvo = localStorage.getItem("theme") || "light";
 rootHtml.setAttribute("data-theme", temaSalvo);
 
 if (temaSalvo === "dark" && themeToggle) {
-    themeToggle.classList.remove("bi-sun");
-    themeToggle.classList.add("bi-moon-stars");
+  themeToggle.classList.remove("bi-sun");
+  themeToggle.classList.add("bi-moon-stars");
 }
 
 function changeTheme() {
-    const currentTheme = rootHtml.getAttribute("data-theme");
-    const newTheme = currentTheme === "dark" ? "light" : "dark";
-    rootHtml.setAttribute("data-theme", newTheme);
-    localStorage.setItem("theme", newTheme);
+  const currentTheme = rootHtml.getAttribute("data-theme");
+  const newTheme = currentTheme === "dark" ? "light" : "dark";
+  rootHtml.setAttribute("data-theme", newTheme);
+  localStorage.setItem("theme", newTheme);
 
-    if (themeToggle) {
-        themeToggle.classList.toggle("bi-sun");
-        themeToggle.classList.toggle("bi-moon-stars");
-    }
+  if (themeToggle) {
+    themeToggle.classList.toggle("bi-sun");
+    themeToggle.classList.toggle("bi-moon-stars");
+  }
 }
 
 if (themeToggle) {
-    themeToggle.addEventListener("click", changeTheme);
+  themeToggle.addEventListener("click", changeTheme);
 }
 
 const recoveryScreen = document.querySelector(".passwordRecovery");
@@ -232,113 +234,117 @@ const btnForgot = document.getElementById("forgotPassword");
 const btnBack = document.getElementById("btnBackToLogin");
 const recoveryInstruction = document.getElementById("recoveryInstruction");
 
-
 if (btnForgot) {
-    btnForgot.onclick = (e) => {
-        e.preventDefault();
-        recoveryScreen.classList.add("active");
-        mostrarEtapa(1);
-    };
+  btnForgot.onclick = (e) => {
+    e.preventDefault();
+    recoveryScreen.classList.add("active");
+    mostrarEtapa(1);
+  };
 }
 
 btnBack.onclick = () => {
-    recoveryScreen.classList.remove("active");
+  recoveryScreen.classList.remove("active");
 };
 
 function mostrarEtapa(etapa) {
-    step1.style.display = etapa === 1 ? "block" : "none";
-    step2.style.display = etapa === 2 ? "block" : "none";
-    step3.style.display = etapa === 3 ? "block" : "none";
+  step1.style.display = etapa === 1 ? "block" : "none";
+  step2.style.display = etapa === 2 ? "block" : "none";
+  step3.style.display = etapa === 3 ? "block" : "none";
 
-    if (etapa === 1) recoveryInstruction.innerHTML = "Informe seu e-mail para receber um código de validação.";
-    if (etapa === 2) recoveryInstruction.innerHTML = "Digite o código de 6 dígitos enviado ao seu e-mail.";
-    if (etapa === 3) recoveryInstruction.innerHTML = "Crie uma nova senha segura para sua conta.";
+  if (etapa === 1)
+    recoveryInstruction.innerHTML =
+      "Informe seu e-mail para receber um código de validação.";
+  if (etapa === 2)
+    recoveryInstruction.innerHTML =
+      "Digite o código de 6 dígitos enviado ao seu e-mail.";
+  if (etapa === 3)
+    recoveryInstruction.innerHTML =
+      "Crie uma nova senha segura para sua conta.";
 }
 
-
 document.getElementById("btnVerifyEmail").onclick = async () => {
-    const btn = document.getElementById("btnVerifyEmail"); 
-    const email = document.getElementById("emailRecovery").value.trim();
-    const msg = document.getElementById("recoveryMsg");
+  const btn = document.getElementById("btnVerifyEmail");
+  const email = document.getElementById("emailRecovery").value.trim();
+  const msg = document.getElementById("recoveryMsg");
 
-    if (!email) {
-        msg.innerHTML = "Digite seu e-mail.";
-        return;
+  if (!email) {
+    msg.innerHTML = "Digite seu e-mail.";
+    return;
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = "Enviando...";
+
+  try {
+    const response = await fetch(`${API_URL}/send-code`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      alert("Código enviado com sucesso!");
+      mostrarEtapa(2);
+    } else {
+      msg.innerHTML = data.error || "E-mail não encontrado.";
     }
-
-    btn.disabled = true; 
-    btn.innerHTML = "Enviando..."; 
-
-    try {
-        const response = await fetch(`${API_URL}/send-code`, { 
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email }),
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-            alert("Código enviado com sucesso!");
-            mostrarEtapa(2);
-        } else {
-            msg.innerHTML = data.error || "E-mail não encontrado.";
-        }
-    } catch (err) {
-        msg.innerHTML = "Erro ao conectar com o servidor.";
-    } finally {
-        btn.disabled = false; 
-        btn.innerHTML = "Enviar Código"; 
-    }
+  } catch (err) {
+    msg.innerHTML = "Erro ao conectar com o servidor.";
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = "Enviar Código";
+  }
 };
 
 document.getElementById("btnGoToStep3").onclick = () => {
-    const code = document.getElementById("verificationCode").value.trim();
-    const msgCode = document.getElementById("recoveryMsgCode");
+  const code = document.getElementById("verificationCode").value.trim();
+  const msgCode = document.getElementById("recoveryMsgCode");
 
-    if (code.length === 6) {
-        mostrarEtapa(3);
-    } else {
-        msgCode.innerHTML = "O código deve ter 6 dígitos.";
-    }
+  if (code.length === 6) {
+    mostrarEtapa(3);
+  } else {
+    msgCode.innerHTML = "O código deve ter 6 dígitos.";
+  }
 };
 
 document.getElementById("btnUpdatePassword").onclick = async () => {
-    const btn = document.getElementById("btnUpdatePassword");
-    const email = document.getElementById("emailRecovery").value.trim();
-    const code = document.getElementById("verificationCode").value.trim();
-    const newPassword = document.getElementById("newPassword").value;
-    const confirm = document.getElementById("confirmPasswordNew").value;
-    const msg2 = document.getElementById("recoveryMsg2");
+  const btn = document.getElementById("btnUpdatePassword");
+  const email = document.getElementById("emailRecovery").value.trim();
+  const code = document.getElementById("verificationCode").value.trim();
+  const newPassword = document.getElementById("newPassword").value;
+  const confirm = document.getElementById("confirmPasswordNew").value;
+  const msg2 = document.getElementById("recoveryMsg2");
 
-    if (newPassword !== confirm) {
-        msg2.innerHTML = "As senhas não coincidem.";
-        return;
+  if (newPassword !== confirm) {
+    msg2.innerHTML = "As senhas não coincidem.";
+    return;
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Processando...';
+  msg2.innerHTML = "";
+
+  try {
+    const response = await fetch(`${API_URL}/reset-password`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, code, newPassword }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      alert("🎉 Senha alterada com sucesso!");
+      location.reload();
+    } else {
+      msg2.innerHTML = data.error || "Erro ao redefinir.";
     }
-
-    btn.disabled = true;
-    btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Processando...';
-    msg2.innerHTML = ""; 
-
-    try {
-        const response = await fetch(`${API_URL}/reset-password`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, code, newPassword }),
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-            alert("🎉 Senha alterada com sucesso!");
-            location.reload();
-        } else {
-            msg2.innerHTML = data.error || "Erro ao redefinir.";
-        }
-    } catch (err) {
-        msg2.innerHTML = "Erro de conexão com o servidor.";
-    } finally {
-        btn.disabled = false;
-        btn.innerHTML = "Redefinir Senha";
-    }
+  } catch (err) {
+    msg2.innerHTML = "Erro de conexão com o servidor.";
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = "Redefinir Senha";
+  }
 };
