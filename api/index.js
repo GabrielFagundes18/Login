@@ -153,15 +153,5 @@ app.get((req, res) => {
 });
 
 
-app.listen(PORT, () => {
-  console.log(`\n🚀 SITE ONLINE: http://localhost:${PORT}`);
-  console.log(`📂 Pasta: ${__dirname}`);
 
-  prisma
-    .$connect()
-    .then(() => console.log("🐘 Banco de Dados: OK"))
-    .catch(() =>
-      console.log("⚠️  Aviso: Banco offline, mas o site deve abrir."),
-    );
-});
 module.exports = app;

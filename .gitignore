@@ -1,19 +1,17 @@
-
 node_modules/
+
+generated/
+.prisma/
 
 
 .env
 .env.local
 .env.sample
-!.env.example # Permite enviar um modelo sem dados reais
-
-
-schema.prisma.backup
+!.env.example
 
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
 
 .DS_Store
 Thumbs.db
