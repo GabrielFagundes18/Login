@@ -45,7 +45,7 @@ document.querySelectorAll(".btn-switch-login").forEach((btn) => {
 goLogin();
 
 const body = document.body;
-const API_URL = "http://localhost:3001/api";
+const API_URL = "/api";
 
 async function toCheckEmail() {
   const emailErrorRegister = document.getElementById("emailErrorRegister");
