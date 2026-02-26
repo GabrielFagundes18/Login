@@ -16,5 +16,8 @@
     "nodemailer": "^8.0.1",
     "prisma": "^5.22.0",
     "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "gh-pages": "^6.3.0"
   }
 }

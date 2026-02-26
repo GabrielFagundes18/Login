@@ -2,25 +2,20 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 const bcrypt = require("bcryptjs");
-
+const { PrismaClient } = require("@prisma/client");
 const app = express();
+const createServer = require("vercel-express");
+
 app.use(cors());
 app.use(express.json());
 
-
-
-
-
-const { PrismaClient } = require("@prisma/client");
-
 const prisma = new PrismaClient();
-
 
 app.get("/api/check-email/:email", async (req, res) => {
   try {
     const user = await prisma.usuario.findUnique({
       where: { email: req.params.email },
-      select: { id: true } 
+      select: { id: true },
     });
     res.json({ exists: !!user });
   } catch (error) {
@@ -35,18 +30,20 @@ app.post("/api/register", async (req, res) => {
     const senhaHash = await bcrypt.hash(senha, salt);
 
     const novoUsuario = await prisma.usuario.create({
-      data: { 
-        nome, 
-        email, 
+      data: {
+        nome,
+        email,
         senha: senhaHash,
-        tipo: "cliente" 
+        tipo: "cliente",
       },
     });
 
     res.status(201).json({ success: true, user: novoUsuario });
   } catch (error) {
     console.error(error);
-    res.status(400).json({ error: "Erro ao cadastrar. O e-mail pode já existir." });
+    res
+      .status(400)
+      .json({ error: "Erro ao cadastrar. O e-mail pode já existir." });
   }
 });
 
@@ -57,23 +54,27 @@ app.post("/api/login", async (req, res) => {
     const user = await prisma.usuario.findUnique({ where: { email } });
 
     if (!user) {
-      return res.status(401).json({ field: "email", message: "E-mail não cadastrado." });
+      return res
+        .status(401)
+        .json({ field: "email", message: "E-mail não cadastrado." });
     }
 
     const senhaValida = await bcrypt.compare(senha, user.senha);
 
     if (!senhaValida) {
-      return res.status(401).json({ field: "password", message: "Senha incorreta." });
+      return res
+        .status(401)
+        .json({ field: "password", message: "Senha incorreta." });
     }
 
     const { senha: _, ...userData } = user;
     res.json(userData);
-
   } catch (error) {
-    res.status(500).json({ field: "server", message: "Erro interno no servidor." });
+    res
+      .status(500)
+      .json({ field: "server", message: "Erro interno no servidor." });
   }
 });
-
 
 const nodemailer = require("nodemailer");
 
@@ -86,13 +87,13 @@ app.post("/api/send-code", async (req, res) => {
     if (!user) return res.status(404).json({ error: "E-mail não cadastrado." });
 
     const codigo = Math.floor(100000 + Math.random() * 900000).toString();
-    
+
     codigosVerificacao[email] = {
       codigo: codigo,
-      expira: Date.now() + (10 * 60 * 1000) 
+      expira: Date.now() + 10 * 60 * 1000,
     };
 
-    console.log(`Código para ${email}: ${codigo}`); 
+    console.log(`Código para ${email}: ${codigo}`);
     res.json({ success: true });
   } catch (error) {
     res.status(500).json({ error: "Erro no servidor." });
@@ -110,7 +111,9 @@ app.post("/api/reset-password", async (req, res) => {
 
   if (Date.now() > dadosRecuperacao.expira) {
     delete codigosVerificacao[email]; // Limpa para não ocupar memória
-    return res.status(400).json({ error: "Este código expirou (limite de 10 min)." });
+    return res
+      .status(400)
+      .json({ error: "Este código expirou (limite de 10 min)." });
   }
 
   try {
@@ -119,7 +122,7 @@ app.post("/api/reset-password", async (req, res) => {
 
     await prisma.usuario.update({
       where: { email: email },
-      data: { senha: senhaHash }
+      data: { senha: senhaHash },
     });
 
     delete codigosVerificacao[email];
@@ -130,14 +133,10 @@ app.post("/api/reset-password", async (req, res) => {
   }
 });
 
-
-
-app.use(express.static(path.join(__dirname, '../public')));
+app.use(express.static(path.join(__dirname, "../public")));
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "../public/index.html"));
 });
 
-
-
-module.exports = app;
+module.exports = createServer(app);
