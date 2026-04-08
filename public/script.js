@@ -17,7 +17,9 @@ function goSignup() {
   btnSignupNav.classList.add("signup-pill");
   btnLoginNav.classList.remove("signup-pill");
 
-  brandingTitle.innerText = "Crie sua conta agora 🚀";
+  if (brandingTitle) {
+    brandingTitle.innerText = "Crie sua conta agora";
+  }
   setPagination(1);
 }
 
@@ -27,7 +29,9 @@ function goLogin() {
   btnLoginNav.classList.add("signup-pill");
   btnSignupNav.classList.remove("signup-pill");
 
-  brandingTitle.innerText = "Faça seu login";
+  if (brandingTitle) {
+    brandingTitle.innerText = "Faca seu login";
+  }
   setPagination(0);
 }
 
@@ -44,7 +48,6 @@ document.querySelectorAll(".btn-switch-login").forEach((btn) => {
 
 goLogin();
 
-const body = document.body;
 const API_URL = "/api";
 
 async function toCheckEmail() {
@@ -61,11 +64,11 @@ async function toCheckEmail() {
     return false;
   }
   if (email !== confirm) {
-    emailErrorRegister.innerHTML = "Os e-mails não coincidem.";
+    emailErrorRegister.innerHTML = "Os e-mails nao coincidem.";
     return false;
   }
   if (!regex.test(email)) {
-    emailErrorRegister.innerHTML = "E-mail inválido.";
+    emailErrorRegister.innerHTML = "E-mail invalido.";
     return false;
   }
 
@@ -73,7 +76,7 @@ async function toCheckEmail() {
     const response = await fetch(`${API_URL}/check-email/${email}`);
     const data = await response.json();
     if (data.exists) {
-      emailErrorRegister.innerHTML = "E-mail já cadastrado!";
+      emailErrorRegister.innerHTML = "E-mail ja cadastrado!";
       return false;
     }
   } catch (e) {
@@ -93,17 +96,19 @@ async function registerUser(nome, email, senha) {
     });
 
     if (response.ok) {
-      success.style.color = "#00ff00";
-      success.innerHTML = "🎉 Cadastro realizado!";
+      success.style.color = "var(--success)";
+      success.innerHTML = "Cadastro realizado com sucesso!";
       setTimeout(() => {
         success.innerHTML = "Redirecionando...";
         setTimeout(goLogin, 1000);
       }, 1500);
     } else {
       const errorData = await response.json();
+      success.style.color = "var(--error)";
       success.innerHTML = errorData.error || "Erro ao cadastrar.";
     }
   } catch (error) {
+    success.style.color = "var(--error)";
     success.innerHTML = "Erro ao conectar ao servidor.";
   }
 }
@@ -167,15 +172,18 @@ function toCheckPassword() {
 
   if (pass === "" || confirm === "") {
     passwordError.innerHTML = "Preencha as senhas.";
-  } else if (pass !== confirm) {
-    passwordError.innerHTML = "Senhas não conferem.";
-  } else if (pass.length < 8 || !hasSpecial || !hasCapital || !hasNumber) {
-    passwordError.innerHTML =
-      "Senha fraca (Mín. 8 caracteres, Maiúscula, Número e Símbolo).";
-  } else {
-    return true;
+    return false;
   }
-  return false;
+  if (pass !== confirm) {
+    passwordError.innerHTML = "Senhas nao conferem.";
+    return false;
+  }
+  if (pass.length < 8 || !hasSpecial || !hasCapital || !hasNumber) {
+    passwordError.innerHTML =
+      "Senha fraca (Min. 8 caracteres, Maiuscula, Numero e Simbolo).";
+    return false;
+  }
+  return true;
 }
 
 function toCheckUser() {
@@ -200,12 +208,13 @@ document.querySelectorAll("input").forEach((input) => {
   });
 });
 
+// Theme toggle
 const themeToggle = document.getElementById("toggleTheme");
 const rootHtml = document.documentElement;
-const temaSalvo = localStorage.getItem("theme") || "light";
+const temaSalvo = localStorage.getItem("theme") || "dark";
 rootHtml.setAttribute("data-theme", temaSalvo);
 
-if (temaSalvo === "dark" && themeToggle) {
+if (temaSalvo === "light" && themeToggle) {
   themeToggle.classList.remove("bi-sun");
   themeToggle.classList.add("bi-moon-stars");
 }
@@ -226,6 +235,7 @@ if (themeToggle) {
   themeToggle.addEventListener("click", changeTheme);
 }
 
+// Password Recovery
 const recoveryScreen = document.querySelector(".passwordRecovery");
 const step1 = document.getElementById("step-1");
 const step2 = document.getElementById("step-2");
@@ -242,24 +252,29 @@ if (btnForgot) {
   };
 }
 
-btnBack.onclick = () => {
-  recoveryScreen.classList.remove("active");
-};
+if (btnBack) {
+  btnBack.onclick = () => {
+    recoveryScreen.classList.remove("active");
+  };
+}
 
 function mostrarEtapa(etapa) {
   step1.style.display = etapa === 1 ? "block" : "none";
   step2.style.display = etapa === 2 ? "block" : "none";
   step3.style.display = etapa === 3 ? "block" : "none";
 
-  if (etapa === 1)
+  if (etapa === 1) {
     recoveryInstruction.innerHTML =
-      "Informe seu e-mail para receber um código de validação.";
-  if (etapa === 2)
+      "Informe seu e-mail para receber um codigo de validacao.";
+  }
+  if (etapa === 2) {
     recoveryInstruction.innerHTML =
-      "Digite o código de 6 dígitos enviado ao seu e-mail.";
-  if (etapa === 3)
+      "Digite o codigo de 6 digitos enviado ao seu e-mail.";
+  }
+  if (etapa === 3) {
     recoveryInstruction.innerHTML =
       "Crie uma nova senha segura para sua conta.";
+  }
 }
 
 document.getElementById("btnVerifyEmail").onclick = async () => {
@@ -285,16 +300,16 @@ document.getElementById("btnVerifyEmail").onclick = async () => {
     const data = await response.json();
 
     if (response.ok) {
-      alert("Código enviado com sucesso!");
+      alert("Codigo enviado com sucesso!");
       mostrarEtapa(2);
     } else {
-      msg.innerHTML = data.error || "E-mail não encontrado.";
+      msg.innerHTML = data.error || "E-mail nao encontrado.";
     }
   } catch (err) {
     msg.innerHTML = "Erro ao conectar com o servidor.";
   } finally {
     btn.disabled = false;
-    btn.innerHTML = "Enviar Código";
+    btn.innerHTML = "Enviar Codigo";
   }
 };
 
@@ -305,7 +320,7 @@ document.getElementById("btnGoToStep3").onclick = () => {
   if (code.length === 6) {
     mostrarEtapa(3);
   } else {
-    msgCode.innerHTML = "O código deve ter 6 dígitos.";
+    msgCode.innerHTML = "O codigo deve ter 6 digitos.";
   }
 };
 
@@ -318,12 +333,12 @@ document.getElementById("btnUpdatePassword").onclick = async () => {
   const msg2 = document.getElementById("recoveryMsg2");
 
   if (newPassword !== confirm) {
-    msg2.innerHTML = "As senhas não coincidem.";
+    msg2.innerHTML = "As senhas nao coincidem.";
     return;
   }
 
   btn.disabled = true;
-  btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Processando...';
+  btn.innerHTML = "Processando...";
   msg2.innerHTML = "";
 
   try {
@@ -336,13 +351,13 @@ document.getElementById("btnUpdatePassword").onclick = async () => {
     const data = await response.json();
 
     if (response.ok) {
-      alert("🎉 Senha alterada com sucesso!");
+      alert("Senha alterada com sucesso!");
       location.reload();
     } else {
       msg2.innerHTML = data.error || "Erro ao redefinir.";
     }
   } catch (err) {
-    msg2.innerHTML = "Erro de conexão com o servidor.";
+    msg2.innerHTML = "Erro de conexao com o servidor.";
   } finally {
     btn.disabled = false;
     btn.innerHTML = "Redefinir Senha";

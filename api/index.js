@@ -3,8 +3,8 @@ const cors = require("cors");
 const path = require("path");
 const bcrypt = require("bcryptjs");
 const { PrismaClient } = require("@prisma/client");
+
 const app = express();
-const createServer = require("vercel-express");
 
 app.use(cors());
 app.use(express.json());
@@ -76,8 +76,6 @@ app.post("/api/login", async (req, res) => {
   }
 });
 
-const nodemailer = require("nodemailer");
-
 const codigosVerificacao = {};
 
 app.post("/api/send-code", async (req, res) => {
@@ -110,7 +108,7 @@ app.post("/api/reset-password", async (req, res) => {
   }
 
   if (Date.now() > dadosRecuperacao.expira) {
-    delete codigosVerificacao[email]; // Limpa para não ocupar memória
+    delete codigosVerificacao[email];
     return res
       .status(400)
       .json({ error: "Este código expirou (limite de 10 min)." });
@@ -139,4 +137,8 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "../public/index.html"));
 });
 
-module.exports = createServer(app);
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../public/index.html"));
+});
+
+module.exports = app;
