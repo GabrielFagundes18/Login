@@ -4,14 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <meta
-      http-equiv="Content-Security-Policy"
-      content="default-src 'self'; 
-           script-src 'self'; 
-           style-src 'self' https://fonts.googleapis.com https://cdn.jsdelivr.net 'unsafe-inline'; 
-           font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; 
-           connect-src 'self' http://localhost:3001;"
-    />
     <title>Login & Cadastro</title>
     <link rel="stylesheet" href="/style.css" />
     <link
@@ -26,13 +18,14 @@
   <body>
     <main class="main-container">
       <section class="branding-side">
-        <div class="logo"><i class="bi bi-person-bounding-box"></i></i></div>
+        <div class="logo"><i class="bi bi-person-bounding-box"></i></div>
         <div class="branding-content">
-          <h1>Faça seu login ou seu cadastro</h1>
+          <h1>Faca seu login ou seu cadastro</h1>
           <p>
-            Acesse sua conta para aproveitar todos os recursos e benefícios
-            exclusivos. Se ainda não tem uma conta, cadastre-se agora mesmo e
-            junte-se à nossa comunidade!</p>
+            Acesse sua conta para aproveitar todos os recursos e beneficios
+            exclusivos. Se ainda nao tem uma conta, cadastre-se agora mesmo e
+            junte-se a nossa comunidade!
+          </p>
         </div>
         <div class="pagination"><span class="active"></span><span></span></div>
       </section>
@@ -71,7 +64,7 @@
                     type="password"
                     placeholder=" "
                     id="passwordLogin"
-                    autocomplete="new-password"
+                    autocomplete="current-password"
                     data-error-id="passwordError"
                   />
                   <label>SENHA</label>
@@ -81,13 +74,13 @@
                   <button type="submit" id="login" class="btn-submit">
                     Entrar
                   </button>
-                  <button id="forgotPassword" class="passwordForgot">
+                  <button type="button" id="forgotPassword" class="passwordForgot">
                     Esqueci a senha
                   </button>
                 </div>
               </form>
 
-              <span id="errorLogin " class="error-msg"></span>
+              <span id="errorLogin" class="error-msg"></span>
             </div>
 
             <div class="form-box" id="signup-box">
@@ -158,11 +151,12 @@
         </div>
       </section>
     </main>
+
     <div class="passwordRecovery">
       <div class="rocket-container"><i class="bi bi-shield-lock-fill"></i></div>
 
       <h3>Recuperar Senha</h3>
-      <p id="recoveryInstruction">Informe seu e-mail para receber um código.</p>
+      <p id="recoveryInstruction">Informe seu e-mail para receber um codigo.</p>
 
       <div id="step-1" class="recovery-step">
         <div class="input-block">
@@ -170,25 +164,32 @@
           <label>E-mail cadastrado</label>
         </div>
         <small id="recoveryMsg" class="error-msg"></small>
-        <button id="btnVerifyEmail" class="btn-submit">Enviar Código</button>
+        <button id="btnVerifyEmail" class="btn-submit">Enviar Codigo</button>
       </div>
 
-      <div id="step-2" class="input-block" style="display: none">
-        <input
-          type="text"
-          id="verificationCode"
-          placeholder=" "
-          maxlength="6"
-        />
-        <label>Código de 6 dígitos</label>
+      <div id="step-2" class="recovery-step" style="display: none">
+        <div class="input-block">
+          <input
+            type="text"
+            id="verificationCode"
+            placeholder=" "
+            maxlength="6"
+          />
+          <label>Codigo de 6 digitos</label>
+        </div>
         <small id="recoveryMsgCode" class="error-msg"></small>
-        <button id="btnGoToStep3" class="btn-submit">Próximo passo</button>
+        <button id="btnGoToStep3" class="btn-submit">Proximo passo</button>
       </div>
 
-      <div id="step-3" class="input-block" style="display: none">
-        <input type="password" id="newPassword" placeholder=" Nova Senha " />
-        <input type="password" id="confirmPasswordNew" placeholder=" Confirmar Nova Senha " />
-        
+      <div id="step-3" class="recovery-step" style="display: none">
+        <div class="input-block">
+          <input type="password" id="newPassword" placeholder=" " />
+          <label>Nova Senha</label>
+        </div>
+        <div class="input-block">
+          <input type="password" id="confirmPasswordNew" placeholder=" " />
+          <label>Confirmar Nova Senha</label>
+        </div>
         <small id="recoveryMsg2" class="error-msg"></small>
         <button id="btnUpdatePassword" class="btn-submit">
           Redefinir Senha
@@ -199,6 +200,7 @@
         <i class="bi bi-arrow-left"></i> Voltar para o Login
       </button>
     </div>
+
     <script src="/script.js" defer></script>
   </body>
 </html>
